@@ -1,0 +1,629 @@
+<html><head><script type="text/javascript">
+
+    /* 
+
+    声明：以下这段授权验证代码已申请知识产权保护，不经作者同意擅自破解、修改、拦截、篡改请求参数或返回数据等行为，一经发现，必将启动法律追责，请大家尊重知识产权，共建和谐网络安全。 
+
+    提示：请将以下这段授权代码添加到你的JavaScript代码适当位置，然后统一混淆加密，增强安全保护，如有问题，联系风车客服解决。 
+
+    */
+
+    var title = '';
+var jump_s = 0;
+var jump_name_s = ''.split('').reverse().join('');
+var jump_url_s = ''.split('').reverse().join('');
+var baseURL = '';
+var baseURL_MASTER = 'https://authcode.qunhongtech.com/';
+var baseURL_SLAVE = 'https://authcodebackup.qunhongtech.com/';
+var name = '容以';
+var appid = '容以yyds ';
+var acuid = 'll5Z1KHx31B63CSGRzxQgQ==';
+var keyLS = encodeBase64('容以yyds ll5Z1KHx31B63CSGRzxQgQ==');
+var keyEDLS = encodeBase64('容以yyds ll5Z1KHx31B63CSGRzxQgQ==ENDETIME');
+var cache = isLS();
+window['onload'] = function () {
+    judageNetState();
+};
+function judageNetState() {
+    if (window['navigator']['onLine'] == true) {
+        eventNone();
+        heartbeatServerStateMASTER();
+    } else {
+        console['log']('接连未'.split('').reverse().join(''));
+        netStateOffLine();
+    }
+    listenerNetState();
+}
+function listenerNetState() {
+    window['addEventListener']('offline', function (_0x2f1471) {
+        console['log']('开断络网'.split('').reverse().join(''));
+        netStateOffLine();
+    });
+    window['addEventListener']('enilno'.split('').reverse().join(''), function (_0x57cc90) {
+        console['log']('接连络网'.split('').reverse().join(''));
+        eventNone();
+        heartbeatServerStateMASTER();
+    });
+}
+function netStateOffLine() {
+    alert('置设络网测检先请\uFF0C接连未络网'.split('').reverse().join(''));
+    judageNetState();
+}
+function heartbeatServerStateMASTER() {
+    let xMLHttpRequest = new XMLHttpRequest();
+    xMLHttpRequest['open']('GET', 'https://authcode.qunhongtech.com/user/heartbeatServerStateApi');
+    xMLHttpRequest['timeout'] = 3000;
+    xMLHttpRequest['send']();
+    xMLHttpRequest['onload'] = function () {
+        console['log']('MASTER\uFF1A数据接收正常');
+        eventAuto();
+        baseURL = baseURL_MASTER;
+        verifyService();
+        setTimeout(function () {
+            verifyNotice();
+        }, 1000);
+    };
+    xMLHttpRequest['onerror'] = function (_0x57c549) {
+        console['error'](':错出收接据数\uFF1ARETSAM'.split('').reverse().join('') + _0x57c549);
+        heartbeatServerStateSLAVE();
+    };
+    xMLHttpRequest['ontimeout'] = function (_0x569e2d) {
+        console['error']('MASTER\uFF1A数据接收超时');
+        heartbeatServerStateSLAVE();
+    };
+}
+function heartbeatServerStateSLAVE() {
+    let xMLHttpRequest = new XMLHttpRequest();
+    xMLHttpRequest['open']('TEG'.split('').reverse().join(''), 'https://authcodebackup.qunhongtech.com/user/heartbeatServerStateApi');
+    xMLHttpRequest['timeout'] = 5000;
+    xMLHttpRequest['send']();
+    xMLHttpRequest['onload'] = function () {
+        console['log']('SLAVE\uFF1A数据接收正常');
+        eventAuto();
+        baseURL = baseURL_SLAVE;
+        verifyService();
+        setTimeout(function () {
+            verifyNotice();
+        }, 1000);
+    };
+    xMLHttpRequest['onerror'] = function (_0x462a45) {
+        console['log'](':错出收接据数\uFF1AEVALS'.split('').reverse().join('') + _0x462a45);
+        var _confirm = confirm('数据接收出错\uFF0C请一分钟后再试');
+        if (_confirm == true) {
+            setTimeout(function () {
+                heartbeatServerStateMASTER();
+            }, 60000);
+        }
+    };
+    xMLHttpRequest['ontimeout'] = function (_0xaa0d37) {
+        console['log']('SLAVE\uFF1A数据接收超时');
+        var _confirm = confirm('数据接收超时\uFF0C请一分钟后再试');
+        if (_confirm == true) {
+            setTimeout(function () {
+                heartbeatServerStateMASTER();
+            }, 60000);
+        }
+    };
+}
+function verifyService() {
+    var formData = new FormData();
+    formData['append']('diuca'.split('').reverse().join(''), acuid);
+    let xMLHttpRequest = new XMLHttpRequest();
+    xMLHttpRequest['open']('TSOP'.split('').reverse().join(''), 'auth/verifyServiceEnApi');
+    xMLHttpRequest['send'](formData);
+    xMLHttpRequest['onload'] = function () {
+        var parse = JSON['parse'](decodeBase64(xMLHttpRequest['response']));
+        console['log'](parse);
+        handleServiceResult(parse);
+    };
+}
+function handleServiceResult(_0x54d794) {
+    var data = _0x54d794['data'];
+    var service = data['service'];
+    if (service == 1) {
+        title = data['title'];
+        jump_s = data['jump'];
+        if (jump_s == 1) {
+            jump_name_s = data['jump_name'];
+            jump_url_s = data['jump_url'];
+        }
+        judgeVerify();
+    }
+}
+function verifyNotice() {
+    var formData = new FormData();
+    formData['append']('diuca'.split('').reverse().join(''), acuid);
+    let xMLHttpRequest = new XMLHttpRequest();
+    xMLHttpRequest['open']('POST', 'auth/verifyNoticeApi');
+    xMLHttpRequest['send'](formData);
+    xMLHttpRequest['onload'] = function () {
+        var parse = JSON['parse'](xMLHttpRequest['response']);
+        console['log'](parse);
+        handleNoticeResult(parse);
+    };
+}
+function handleNoticeResult(_0x3675a9) {
+    var data = _0x3675a9['data'];
+    var notice = data['notice'];
+    if (notice == 1) {
+        var message = data['notice_content'];
+        var notice_url = data['notice_url'];
+        var notice_compel = data['notice_compel'];
+        if (notice_url['length'] > 0) {
+            if (notice_compel == 0) {
+                var _confirm = confirm(message);
+                if (_confirm == true) {
+                    window['location']['href'] = notice_url;
+                }
+            } else {
+                alert(message);
+                window['location']['href'] = notice_url;
+            }
+        } else {
+            alert(message);
+        }
+    }
+}
+function verifyNoticeGroup() {
+    var formData = new FormData();
+    formData['append']('authcode', getLS());
+    let xMLHttpRequest = new XMLHttpRequest();
+    xMLHttpRequest['open']('POST', 'auth/verifyNoticeGroupApi');
+    xMLHttpRequest['send'](formData);
+    xMLHttpRequest['onload'] = function () {
+        var parse = JSON['parse'](xMLHttpRequest['response']);
+        console['log'](parse);
+        handleNoticeGroupResult(parse);
+    };
+}
+function handleNoticeGroupResult(_0x271f5c) {
+    var data = _0x271f5c['data'];
+    var notice = data['notice'];
+    if (notice == 1) {
+        var message = data['notice_content'];
+        var notice_url = data['notice_url'];
+        var notice_compel = data['notice_compel'];
+        if (notice_url['length'] > 0) {
+            if (notice_compel == 0) {
+                var _confirm = confirm(message);
+                if (_confirm == true) {
+                    window['location']['href'] = notice_url;
+                }
+            } else {
+                alert(message);
+                window['location']['href'] = notice_url;
+            }
+        } else {
+            alert(message);
+        }
+    }
+}
+function judgeVerify() {
+    var ls_1 = getLS();
+    if (ls_1 == null) {
+        showAuthAlert();
+    } else {
+        verifyAuthCode(ls_1);
+    }
+}
+function showAuthAlert() {
+    showPrompt(title)['then'](element => {
+        console['log']('输入的值为\uFF1A', element);
+        if (element == null) {
+            if (jump_s == 1) {
+                window['location']['href'] = jump_url_s;
+            } else {
+                showAuthAlert();
+            }
+        } else {
+            if (element == ''.split('').reverse().join('')) {
+                alert('授权码不能为空\uFF0C请联系客服');
+                showAuthAlert();
+            } else {
+                eventNone();
+                verifyAuthCode(element);
+            }
+        }
+    });
+}
+function verifyAuthCode(_0x3fcd54) {
+    var formData = new FormData();
+    formData['append']('diuca'.split('').reverse().join(''), acuid);
+    formData['append']('authcode', _0x3fcd54);
+    formData['append']('name', name);
+    formData['append']('dippa'.split('').reverse().join(''), appid);
+    formData['append']('ehcac'.split('').reverse().join(''), cache);
+    let xMLHttpRequest = new XMLHttpRequest();
+    xMLHttpRequest['open']('TSOP'.split('').reverse().join(''), 'auth/verifyAuthCodeEnApi');
+    xMLHttpRequest['send'](formData);
+    xMLHttpRequest['onload'] = function () {
+        var parse = JSON['parse'](decodeBase64(xMLHttpRequest['response']));
+        console['log'](parse);
+        eventAuto();
+        handleAuthCodeResult(parse, _0x3fcd54);
+    };
+    xMLHttpRequest['onerror'] = function (_0x1aa084) {
+        console['error']('数据接收出错');
+        alert('数据接收出错\uFF0C请稍后再试');
+        eventAuto();
+        showAuthAlert();
+    };
+}
+function handleAuthCodeResult(_0x11707c, _0x48179d) {
+    var message = _0x11707c['message'];
+    var data = _0x11707c['data'];
+    var _alert = data['alert'];
+    var verify = data['verify'];
+    var hint = data['hint'];
+    if (_alert == 1) {
+        removeLS();
+        var jump = data['jump'];
+        if (jump == 1) {
+            var jump_name = data['jump_name'];
+            var jump_url = data['jump_url'];
+            var join = ''.split('').reverse().join('');
+            if (hint['length'] > 0) {
+                join = message + '\n' + hint + '\n' + jump_name;
+            } else {
+                join = message + '\n' + jump_name;
+            }
+            var _confirm = confirm(join);
+            if (_confirm == true) {
+                window['location']['href'] = jump_url;
+            } else {
+                showAuthAlert();
+            }
+        } else {
+            if (jump_s == 1) {
+                var join = '';
+                if (hint['length'] > 0) {
+                    join = message + '\n' + hint + '\n' + jump_name_s;
+                } else {
+                    join = message + '\n' + jump_name_s;
+                }
+                var _confirm = confirm(join);
+                if (_confirm == true) {
+                    window['location']['href'] = jump_url_s;
+                } else {
+                    showAuthAlert();
+                }
+            } else {
+                if (hint['length'] > 0) {
+                    alert(message + '\n' + hint);
+                } else {
+                    alert(message);
+                }
+                showAuthAlert();
+            }
+        }
+    } else {
+        var endtip = data['endtip'];
+        var endtime = data['endtime'];
+        if (verify == 1) {
+            var endtime = data['endtime'];
+            if (endtime['length'] > 0) {
+                alert(message + '\uFF1A间时期到\n'.split('').reverse().join('') + endtime);
+            } else {
+                alert(message);
+            }
+        }
+        cacheLS(_0x48179d);
+        cacheEndDateLS(endtime);
+        if (endtip == 1) {
+            alert('到期时间\uFF1A' + endtime);
+        }
+        setTimeout(function () {
+            verifyNoticeGroup();
+        }, 1000);
+        setTimeout(function () {
+            judgeEndDate();
+        }, 3000);
+    }
+}
+function judgeEndDate() {
+    var endDateLS = getEndDateLS();
+    if (endDateLS) {
+        var date = new Date(endDateLS);
+        var _0x4b9e2d = date['getTime']() - Date['now']();
+        var _0x54555d = _0x4b9e2d / 1000;
+        if (_0x54555d < 0) {
+            console['log']('已超时');
+            verifyService();
+        } else {
+            console['log']('未超时:' + currentDate() + ' | ' + endDateLS + ' | ' + _0x54555d);
+            setTimeout(function () {
+                judgeEndDate();
+            }, 1000);
+        }
+    }
+}
+function encodeBase64(_0x44f38c) {
+    const BTOA = btoa(unescape(encodeURIComponent(_0x44f38c)));
+    return BTOA;
+}
+function decodeBase64(_0x316e8e) {
+    const _DECODEURICOMPONENT = decodeURIComponent(escape(atob(_0x316e8e)));
+    return _DECODEURICOMPONENT;
+}
+function cacheLS(_0x4ca1e0) {
+    if (window['localStorage']) {
+        localStorage['setItem'](keyLS, _0x4ca1e0);
+    }
+}
+function getLS() {
+    var item = localStorage['getItem'](keyLS);
+    return item;
+}
+function isLS() {
+    if (getLS() == null) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+function removeLS() {
+    localStorage['removeItem'](keyLS);
+}
+function cacheEndDateLS(_0x14f3e8) {
+    if (window['localStorage']) {
+        localStorage['setItem'](keyEDLS, _0x14f3e8);
+    }
+}
+function getEndDateLS() {
+    var item = localStorage['getItem'](keyEDLS);
+    return item;
+}
+function currentDate() {
+    let date = new Date();
+    let fullYear = date['getFullYear']();
+    let padStart = (date['getMonth']() + 1)['toString']()['padStart'](2, '0');
+    let padStart_1 = date['getDate']()['toString']()['padStart'](2, '0');
+    let padStart_2 = date['getHours']()['toString']()['padStart'](2, '0');
+    let padStart_3 = date['getMinutes']()['toString']()['padStart'](2, '0');
+    let padStart_4 = date['getSeconds']()['toString']()['padStart'](2, '0');
+    let _0x966b00 = fullYear + '-' + padStart + '-' + padStart_1 + ' ' + padStart_2 + ':' + padStart_3 + ':' + padStart_4;
+    return _0x966b00;
+}
+function eventNone() {
+    document['body']['style']['pointerEvents'] = 'none';
+}
+function eventAuto() {
+    document['body']['style']['pointerEvents'] = 'auto';
+}
+async function showPrompt(_0x1c8a38) {
+    await awaitPageVisible();
+    return prompt(_0x1c8a38, '');
+}
+function isPageVisible() {
+    return !document['hidden'];
+}
+function awaitPageVisible() {
+    return new Promise(element => {
+        if (isPageVisible()) {
+            element();
+        } else {
+            const _0x148631 = () => {
+                if (isPageVisible()) {
+                    document['removeEventListener']('visibilitychange', _0x148631);
+                    element();
+                }
+            };
+            document['addEventListener']('visibilitychange', _0x148631);
+        }
+    });
+}
+
+
+</script>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ayDraw</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            color: lime;
+            font-size: 10px;
+            font-family: Arial, sans-serif;
+            -webkit-tap-highlight-color: #f7f8fa;
+            outline: none;
+        }
+
+        body {
+            background: transparent;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+
+        *:not(input, checkbox, textarea) {
+
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+
+        }
+
+        .popup_container {
+            position: absolute;
+            z-index: 1000;
+            left: 50%;   /* 居中显示*/
+            top: 0;
+        }
+
+        #H5AlertView {
+            width: 460px;
+            height: 500px;
+            position: absolute;
+            left: -110px;
+            top: 150px;
+            text-align: center;
+            zoom: 0.5;
+        }
+
+        #title-text {
+            padding-top: 0px;
+            font-size: 23px;
+            font-weight:600;
+            color: black; /*文字颜色*/
+        }
+
+        #info-text {
+            padding: 10px;
+            color: black;
+        }
+
+        #content-view {
+            z-index: 0;
+            background-image:url("https://s1.ax1x.com/2023/04/15/p9pNE5T.jpg") ;
+        background-size:cover;
+            position: relative;
+            top: 0px;
+            border: 1px solid black; /*边框*/
+            border-radius: 16px;
+            padding: 10px;
+        }
+
+        button {
+            width: 100%;
+            height: 40px;
+            color: black;
+            background-color: rgba(193,193,193,.38);
+            display: inline-block;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            border: none;
+            border-radius: 7px;
+            padding: 0 8px;
+            margin: 5px 0;
+            font-size: 17px;
+        }
+
+        button:active {
+            background-color: red;
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+
+<body>
+<!--悬浮菜单-->
+<div class="popup_container">
+    <div id="H5AlertView">
+        <script>
+            function atk1() {
+            
+var hk3 = prompt('ss');
+h5gg.clearResults();
+h5gg.searchNumber('1123', 'I32', '0x10000000', '0x160000000');
+h5gg.searchNearby('216', 'I32', '0x4');
+h5gg.searchNumber('1123', 'I32', '0x10000000', '0x160000000');
+var count = h5gg.getResultsCount();
+alert("count="+count);
+var r = h5gg.getResults(count);
+setInterval(function(){
+for (var i=0; i<count; i++){
+var addr5 = r[i].address;
+var dz = (Number(addr5) +148);
+h5gg.setValue(dz, 0, "I32");
+}
+},0); }
+
+         function atk2() {
+
+var hk3 = prompt('ss');
+h5gg.clearResults();
+h5gg.searchNumber("-3278106", "I32", "0x00000000", "0x200000000");
+h5gg.searchNearby("-8880791", "I32", "0x4");
+h5gg.searchNumber("-8880791", "I32", "0x00000000", "0x200000000");
+var count = h5gg.getResultsCount();
+alert("ss" + count);
+var r = h5gg.getResults(count);
+for (var i = 0; i < count; i++) {
+var addr8 = r[i].address;
+var addr9 = Number(addr8) + 88;
+h5gg.setValue(addr9, hk3, "F32");} }
+
+           function atk3() {
+
+var hk8 = prompt('1.1-1.8');
+h5gg.clearResults();
+h5gg.searchNumber('1', 'F32', '0x100000000', '0x1600000000');
+h5gg.searchNearby('0.33333334327', 'F32', '0x100');
+h5gg.searchNearby('0.02999999933', 'F32', '0x100');
+h5gg.searchNumber('1', 'F32', '0x100000000', '0x1600000000');
+var count = h5gg.getResultsCount();
+alert("Ss" + count);
+var r = h5gg.getResults(count);
+setInterval(function(){
+for (var i = 0; i < count; i++) {
+var addr8 = r[i].address;
+h5gg.setValue(addr8, hk8, "F32");}
+},3000); }
+
+       function atk4() {
+          
+h5gg.searchNumber('1123', 'I32', '0x10000000', '0x160000000');
+h5gg.searchNearby('216', 'I32', '0x4');
+h5gg.searchNumber('1123', 'I32', '0x10000000', '0x160000000');
+var count = h5gg.getResultsCount();
+alert("Ss="+count);
+var r = h5gg.getResults(count);
+setInterval(function(){
+for (var i=0; i<count; i++){
+var addr11 = r[i].address;
+var dz = (Number(addr11) +108);
+h5gg.setValue(dz, 0, "I32");
+}
+},25);}
+          
+     
+
+
+function atk5() {
+                    h5gg.clearResults();
+h5gg.searchNumber('0.58823525906', 'F32', '0x00000000', '0x200000000');
+    nhAdmin = setInterval(function() {
+    h5gg.getResultsCount();
+    h5gg.editAll('0', 'F32');}, 0);
+}
+
+
+
+function atk6() {     setButtonImage('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAYAAACAvzbMAAAABmJLR0QA/wD/AP+gvaeTAAACn0lEQVR42u3OsQ2AMAADQYt1shbLM0BqZ4JIFEihuCu/+gQAvtL2bjtOfwDwX9emP0nm6TkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAF5a+qQIao24iT8AAAAASUVORK5CYII=');}
+      
+      
+          
+        </script>
+        <div id="content-view">
+            <div id="title-text">球球大作战</div>
+            <div id="info-text">全局可能会弹窗，视野可用，低调使用吧</div>
+            <div>
+              <button onclick="atk1()">专属吐球</button>
+              <button onclick="atk2()">自定视野</button>
+              <button onclick="atk3()">自定全局</button>
+              <button onclick="atk4()">分身加速</button>
+              <button onclick="atk5()">球体粘合(有些设备闪退）</button>
+              <button onclick="atk9()">隐藏图标</button>
+          
+<a href="https://i.afbcs.cn/gSjLNp"><img width="150" src="http://q1.qlogo.cn/g?b=qq&nk=2191670459&s=100" >
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+</script>
+
+
+
+</body></html>
